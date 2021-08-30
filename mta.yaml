@@ -1,0 +1,210 @@
+## Generated mta.yaml based on template version 0.4.0
+## appName = supplier-portal
+## language=nodejs; multitenant=false
+## approuter=
+_schema-version: '3.1'
+ID: supplier-portal
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+   - builder: custom
+     commands:
+      - npm install --production
+      - npx -p @sap/cds-dk cds build --production
+
+modules:
+  - name: supplier-portal-approuter
+    type: nodejs
+    path: approuter
+    properties:
+      DEBUG: "*"
+      SAP_JWT_TRUST_ACL: |
+        [
+          {"clientid":"*","identityzone":"*"}
+        ]
+    requires:
+      - name: supplier-portal-uaa
+      - name: supplier-portal-html5-runtime
+      - name: srv-api
+        group: destinations
+        properties:
+          forwardAuthToken: true
+          name: srv-api
+          strictSSL: true
+          url: ~{srv-url}
+    provides:
+      - name: app-binding
+        properties:
+          app-fqdn: ${default-host}.${default-domain}
+          app-url: https://~{app-binding/app-fqdn}
+    parameters:
+      disk-quota: 256M
+      health-check-timeout: 180
+      memory: 512M
+      routes:
+        - route: ${org}-supplier-portal.${domain}
+    build-parameters:
+      builder: zip
+  - name: supplier-portal-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: supplier-portal-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - erp4smesalesordersalesorder.zip
+          name: erp4smesalesordersalesorder
+          target-path: resources/
+        - artifacts:
+            - admin.zip
+          name: admin
+          target-path: resources/
+  - name: erp4smesalesordersalesorder
+    type: html5
+    path: app/salesorder
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+  - name: admin
+    type: html5
+    path: app/admin
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+  
+  # --------------------- SERVER MODULE ------------------------
+  - name: supplier-portal-srv
+  # ------------------------------------------------------------
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+    # Resources extracted from CAP configuration
+    - name: supplier-portal-database
+    provides:
+    - name: srv-api      # required by consumers of CAP services (e.g. approuter)
+      properties:
+        srv-url: ${default-url}
+
+  # -------------------- SIDECAR MODULE ------------------------
+  - name: supplier-portal-db-deployer
+  # ------------------------------------------------------------
+    type: hdb
+    path: gen/db  
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+    # 'hana' and 'xsuaa' resources extracted from CAP configuration
+    - name: supplier-portal-database
+
+resources:
+ # services extracted from CAP configuration
+ # 'service-plan' can be configured via 'cds.requires.<name>.vcap.plan'
+# ------------------------------------------------------------
+  - name: supplier-portal-database
+# ------------------------------------------------------------
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana  # or 'hanatrial' on trial landscapes
+      service-plan: hdi-shared
+    properties:
+      hdi-service-name: ${service-name}
+  - name: supplier-portal-html5-runtime
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-runtime
+  # - name: supplier-portal-destination
+  #   type: org.cloudfoundry.managed-service
+  #   parameters:
+  #     service: destination
+  #     service-plan: lite
+  #     config:
+  #       HTML5Runtime_enabled: true
+  #       version: 1.0.0
+  #       init_data:
+  #         subaccount:
+  #           existing_destinations_policy: update
+  #           destinations:
+  #             - Authentication: NoAuthentication
+  #               Description: Backend URL
+  #               HTML5.DynamicDestination: true
+  #               HTML5.ForwardAuthToken: true
+  #               Name: srv-api
+  #               ProxyType: Internet
+  #               Type: HTTP
+  #               URL: ~{srv-api/srv-url}
+  #   requires:
+  #     - name: srv-api
+  - name: supplier-portal-portal
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: portal
+      service-plan: standard
+  - name: supplier-portal-uaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        role-collections:
+          - description: Sales Order Manager
+            name: $XSAPPNAME.SalesOrderManager
+            role-template-references:
+              - $XSAPPNAME.Display
+              - $XSAPPNAME.Write
+              - $XSAPPNAME.Delete
+        role-templates:
+          - description: Display
+            name: Display
+            scope-references:
+              - $XSAPPNAME.Display
+              - uaa.user
+          - description: Write
+            name: Write
+            scope-references:
+              - $XSAPPNAME.Write
+              - uaa.user
+          - description: Delete
+            name: Delete
+            scope-references:
+              - $XSAPPNAME.Delete
+              - uaa.user
+        scopes:
+          - description: Display
+            name: $XSAPPNAME.Display
+          - description: Write
+            name: $XSAPPNAME.Write
+          - description: Delete
+            name: $XSAPPNAME.Delete
+          - description: With this scope set, the callbacks for tenant onboarding, offboarding and getDependencies can be called
+            grant-as-authority-to-apps:
+              - $XSAPPNAME(application,sap-provisioning,tenant-onboarding)
+            name: $XSAPPNAME.Callback
+        tenant-mode: dedicated
+        xsappname: supplier-portal-${space}
+      service: xsuaa
+      service-plan: application
+  - name: supplier-portal-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: supplier-portal-html5-app-host-service
+      service-plan: app-host     
+
+

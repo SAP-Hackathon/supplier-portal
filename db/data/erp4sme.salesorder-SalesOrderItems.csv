@@ -1,0 +1,2 @@
+ID;currency_code;grossAmount;netAmount;taxAmount;deliveryDate;quantity;quantityUnit;product_id;salesOrder_id
+cfcfc996-7107-45ee-86b2-ba45cede978a;EUR;15117.76;12704;2413.76;2019-12-03;90;PC;90a8763d-d914-350f-8487-17f842e562a5;5d47f9c4-e725-4f24-a5f1-e053f0f7afcd

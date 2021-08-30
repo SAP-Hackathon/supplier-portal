@@ -1,0 +1,11 @@
+{
+    "welcomeFile": "/salesorder",
+    "authenticationMethod": "route",
+    "sessionTimeout": 30,
+    "logout": {
+        "logoutEndpoint": "/do/logout",
+        "logoutPage": "/"
+    },
+    "routes": [
+     ]
+}
