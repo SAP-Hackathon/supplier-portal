@@ -29,6 +29,8 @@ modules:
     requires:
       - name: supplier-portal-uaa
       - name: supplier-portal-html5-runtime
+      - name: supplier-portal-destination
+      - name: supplier-portal-portal
       - name: srv-api
         group: destinations
         properties:
@@ -49,6 +51,20 @@ modules:
         - route: ${org}-supplier-portal.${domain}
     build-parameters:
       builder: zip
+  - name: supplier-portal-flpdeployer
+    type: com.sap.portal.content
+    path: flp
+    parameters:
+      stack: cflinuxfs3
+      memory: 128M
+      buildpack: "https://github.com/cloudfoundry/nodejs-buildpack.git#v1.7.11"
+    # properties:
+    #   TENANT_HOST_PATTERN: ^(.*)-${space}-procurement-approuter.${domain}
+    requires:
+      - name: supplier-portal-portal
+      - name: supplier-portal-html5-repo-host
+      - name: supplier-portal-app-content
+      - name: supplier-portal-uaa
   - name: supplier-portal-app-content
     type: com.sap.application.content
     path: .
@@ -98,6 +114,7 @@ modules:
     requires:
     # Resources extracted from CAP configuration
     - name: supplier-portal-database
+    - name: supplier-portal-destination
     provides:
     - name: srv-api      # required by consumers of CAP services (e.g. approuter)
       properties:
@@ -131,28 +148,28 @@ resources:
     parameters:
       service: html5-apps-repo
       service-plan: app-runtime
-  # - name: supplier-portal-destination
-  #   type: org.cloudfoundry.managed-service
-  #   parameters:
-  #     service: destination
-  #     service-plan: lite
-  #     config:
-  #       HTML5Runtime_enabled: true
-  #       version: 1.0.0
-  #       init_data:
-  #         subaccount:
-  #           existing_destinations_policy: update
-  #           destinations:
-  #             - Authentication: NoAuthentication
-  #               Description: Backend URL
-  #               HTML5.DynamicDestination: true
-  #               HTML5.ForwardAuthToken: true
-  #               Name: srv-api
-  #               ProxyType: Internet
-  #               Type: HTTP
-  #               URL: ~{srv-api/srv-url}
-  #   requires:
-  #     - name: srv-api
+  - name: supplier-portal-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      config:
+        HTML5Runtime_enabled: true
+        version: 1.0.0
+        init_data:
+          subaccount:
+            existing_destinations_policy: update
+            destinations:
+              - Authentication: NoAuthentication
+                Description: Backend URL
+                HTML5.DynamicDestination: true
+                HTML5.ForwardAuthToken: true
+                Name: srv-api
+                ProxyType: Internet
+                Type: HTTP
+                URL: ~{srv-api/srv-url}
+    requires:
+      - name: srv-api
   - name: supplier-portal-portal
     type: org.cloudfoundry.managed-service
     parameters:
@@ -196,6 +213,9 @@ resources:
             grant-as-authority-to-apps:
               - $XSAPPNAME(application,sap-provisioning,tenant-onboarding)
             name: $XSAPPNAME.Callback
+        oauth2-configuration: 
+          redirect-uris: 
+            - "https://**.exercise.sap-samples.cn40.apps.platform.sapcloud.cn/**"
         tenant-mode: dedicated
         xsappname: supplier-portal-${space}
       service: xsuaa

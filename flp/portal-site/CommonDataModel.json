@@ -1,0 +1,132 @@
+{
+    "_version": "3.0.0",
+    "identification": {
+        "id": "be3bcdfa-db38-48d6-afde-ae26a529d8f2",
+        "entityType": "bundle"
+    },
+    "payload": {
+        "catalogs": [
+            {
+                "_version": "3.0.0",
+                "identification": {
+                    "id": "defaultCatalogId",
+                    "title": "{{title}}",
+                    "entityType": "catalog",
+                    "i18n": "i18n/defaultCatalogId.properties"
+                },
+                "payload": {
+                    "viz": [
+                        {
+                            "appId": "salesorder",
+                            "vizId": "salesorder-list"
+                        },
+                        {
+                            "appId": "admin",
+                            "vizId": "product-list"
+                        }
+                    ]
+                }
+            }
+        ],
+        "groups": [
+            {
+                "_version": "3.0.0",
+                "identification": {
+                    "id": "defaultGroupId",
+                    "title": "{{default}}",
+                    "entityType": "group",
+                    "i18n": "i18n/defaultGroupId.properties"
+                },
+                "payload": {
+                    "viz": [
+                        {
+                            "id": "salesorder-list-001",
+                            "appId": "salesorder",
+                            "vizId": "salesorder-list"
+                        }
+                    ]
+                }
+            },
+            {
+                "_version": "3.0.0",
+                "identification": {
+                    "id": "masterdata",
+                    "title": "{{masterdata}}",
+                    "entityType": "group",
+                    "i18n": "i18n/defaultGroupId.properties"
+                },
+                "payload": {
+                    "viz": [
+                        {
+                            "id": "product-list-01",
+                            "appId": "admin",
+                            "vizId": "product-list"
+                        }
+                    ]
+                }
+            }
+        ],
+        "sites": [
+            {
+                "_version": "3.0.0",
+                "identification": {
+                    "id": "f1e0f1b2-c3e2-4df2-93f4-cebe7865a89f",
+                    "entityType": "site",
+                    "title": "SAP Fiori Launchpad Procurement PoC",
+                    "description": "SAP Fiori Launchpad Procurement PoC"
+                },
+                "payload": {
+                    "config": {
+                        "ushellConfig": {
+                            "renderers": {
+                                "fiori2": {
+                                    "componentData": {
+                                        "config": {
+                                            "applications": {
+                                                "Shell-home": {}
+                                            },
+                                            "enableSearch": true,
+                                            "enablePersonalization": true,
+                                            "enableSetTheme": true,
+                                            "enableSetLanguage": true
+                                        }
+                                    }
+                                }
+                            },
+                            "bootstrapPlugins": {
+                                "KeyUserPlugin": {
+                                    "component": "sap.ushell.plugins.rta",
+                                    "oAuthScopes": [
+                                        "$XSAPPNAME.KEYUSER"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "groupsOrder": [
+                        "defaultGroupId",
+                        "masterdata"
+                    ],
+                    "sap.cloud.portal": {
+                        "config": {
+                            "theme.id": "sap_fiori_3",
+                            "theme.active": [
+                                "sap_fiori_3",
+                                "sap_fiori_3_dark",
+                                "sap_belize_hcb",
+                                "sap_belize_hcw"
+                            ],
+                            "ui5VersionNumber": "1.90.2",
+                            "flexibilityServices": [
+                                {
+                                    "connector": "KeyUserConnector",
+                                    "url": "/keyuser"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}

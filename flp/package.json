@@ -1,0 +1,16 @@
+{
+  "engines": {
+    "node": "12.x.x"
+  },
+  "name": "supplier-portal",
+  "version": "1.0.0",
+  "description": "supplier portal",
+  "license": "Apache-2.0",
+  "author": "SAP",
+  "dependencies": {
+    "@sap/portal-cf-content-deployer": "4.1.0-20200401113308"
+  },
+  "scripts": {
+    "start": "node --harmony node_modules/@sap/portal-cf-content-deployer/src/index.js"
+  }
+}

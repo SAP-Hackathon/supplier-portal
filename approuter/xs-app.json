@@ -1,5 +1,5 @@
 {
-    "welcomeFile": "/salesorder",
+    "welcomeFile": "/cp.portal",
     "authenticationMethod": "route",
     "sessionTimeout": 30,
     "logout": {
