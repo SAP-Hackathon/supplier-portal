@@ -1,0 +1,53 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "ERP4SME_SALESORDER_PRODUCTS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "erp4sme.salesorder-Products.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ","
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "CATEGORY_ID",
+          "CREATEDAT",
+          "CREATEDBY",
+          "CURRENCY_CODE",
+          "PRICE",
+          "IDENTIFIER",
+          "IMAGE",
+          "ISPREFERRED",
+          "MODIFIEDAT",
+          "MODIFIEDBY",
+          "NAME",
+          "RATING",
+          "RELATEDPRODUCT_ID",
+          "THUMBNAILIMAGE",
+          "ID"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "CATEGORY_ID": "CATEGORY_ID",
+        "CREATEDAT": "CREATEDAT",
+        "CREATEDBY": "CREATEDBY",
+        "CURRENCY_CODE": "CURRENCY_CODE",
+        "PRICE": "PRICE",
+        "IDENTIFIER": "IDENTIFIER",
+        "IMAGE": "IMAGE",
+        "ISPREFERRED": "ISPREFERRED",
+        "MODIFIEDAT": "MODIFIEDAT",
+        "MODIFIEDBY": "MODIFIEDBY",
+        "NAME": "NAME",
+        "RATING": "RATING",
+        "RELATEDPRODUCT_ID": "RELATEDPRODUCT_ID",
+        "THUMBNAILIMAGE": "THUMBNAILIMAGE",
+        "ID": "ID"
+      }
+    }
+  ]
+}

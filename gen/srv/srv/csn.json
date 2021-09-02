@@ -1,0 +1,4149 @@
+{
+  "definitions": {
+    "erp4sme.salesorder.AdminService": {
+      "@source": "srv/admin-service.cds",
+      "kind": "service"
+    },
+    "erp4sme.salesorder.AdminService.Products": {
+      "kind": "entity",
+      "@odata.draft.enabled": true,
+      "@UI.SelectionFields": [
+        {
+          "=": "category_ID"
+        }
+      ],
+      "@UI.LineItem": [
+        {
+          "Value": {
+            "=": "thumbnailImage"
+          },
+          "@UI.Importance": {
+            "#": "Low"
+          }
+        },
+        {
+          "Value": {
+            "=": "identifier"
+          }
+        },
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "category_ID"
+          }
+        },
+        {
+          "Value": {
+            "=": "price"
+          }
+        },
+        {
+          "Value": {
+            "=": "stock"
+          }
+        }
+      ],
+      "@UI.Identification": [
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Label": "{i18n>IncreaseStock}",
+          "Action": "erp4sme.salesorder.AdminService.increaseStock"
+        }
+      ],
+      "@UI.HeaderInfo.TypeName": "{i18n>Product}",
+      "@UI.HeaderInfo.TypeNamePlural": "{i18n>Products}",
+      "@UI.HeaderInfo.ImageUrl": {
+        "=": "image"
+      },
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "name"
+      },
+      "@UI.HeaderInfo.Description.Value": {
+        "=": "identifier"
+      },
+      "@UI.HeaderFacets": [
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Target": "@UI.DataPoint#price",
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Target": "@UI.DataPoint#stock",
+          "@UI.Importance": {
+            "#": "High"
+          }
+        }
+      ],
+      "@UI.Facets": [
+        {
+          "$Type": "UI.CollectionFacet",
+          "Label": "{i18n>Products.GeneralInformation}",
+          "ID": "GeneralInformation",
+          "Facets": [
+            {
+              "$Type": "UI.ReferenceFacet",
+              "Label": "{i18n>Products.Basic}",
+              "Target": "@UI.FieldGroup#GeneralInformation"
+            },
+            {
+              "$Type": "UI.ReferenceFacet",
+              "Label": "{i18n>Products.Admin}",
+              "Target": "@UI.FieldGroup#Admin"
+            }
+          ]
+        }
+      ],
+      "@UI.FieldGroup#GeneralInformation.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#GeneralInformation.Label": "{i18n>GeneralInformation}",
+      "@UI.FieldGroup#GeneralInformation.Data": [
+        {
+          "Value": {
+            "=": "identifier"
+          }
+        },
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "image"
+          }
+        },
+        {
+          "Value": {
+            "=": "description"
+          }
+        },
+        {
+          "Value": {
+            "=": "price"
+          }
+        }
+      ],
+      "@UI.DataPoint#price.Value": {
+        "=": "price"
+      },
+      "@UI.DataPoint#price.Title": "{i18n>Products.Price}",
+      "@UI.DataPoint#stock.$Type": "UI.DataPointType",
+      "@UI.DataPoint#stock.Value": {
+        "=": "stock"
+      },
+      "@UI.DataPoint#stock.Title": "{i18n>Products.Stock}",
+      "@UI.FieldGroup#Admin.Label": "{i18n>Products.Admin}",
+      "@UI.FieldGroup#Admin.Data": [
+        {
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedAt"
+          }
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "erp4sme.salesorder.Products"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "@Common.Text": {
+            "=": "identifier"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String"
+        },
+        "identifier": {
+          "@title": "{i18n>Identifier}",
+          "type": "cds.String"
+        },
+        "category": {
+          "@Common.ValueList.CollectionPath": "Categories",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "ValueListProperty": "ID",
+              "LocalDataProperty": {
+                "=": "category_ID"
+              }
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "identifier"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "name"
+            }
+          ],
+          "@title": "{i18n>Category}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.AdminService.Categories",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "description": {
+          "@UI.MultiLineText": true,
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String"
+        },
+        "currency": {
+          "@title": "{i18n>Currency}",
+          "@Common.Text": {
+            "=": "currency.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@Common.ValueListWithFixedValues": true,
+          "@description": "{i18n>CurrencyCode.Description}",
+          "type": "Currency",
+          "target": "erp4sme.salesorder.AdminService.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "image": {
+          "@title": "{i18n>Image}",
+          "type": "cds.String"
+        },
+        "thumbnailImage": {
+          "@title": "{i18n>ThumbnailImage}",
+          "@UI.IsImageURL": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "isPreferred": {
+          "type": "cds.Boolean"
+        },
+        "rating": {
+          "@title": "{i18n>Rating}",
+          "type": "cds.Decimal",
+          "precision": 2,
+          "scale": 1
+        },
+        "relatedProduct": {
+          "@title": "{i18n>RelatedProduct}",
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.AdminService.Products",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "price": {
+          "@title": "{i18n>Price}",
+          "@Measures.ISOCurrency": {
+            "=": "currency_code"
+          },
+          "type": "cds.Decimal",
+          "precision": 9,
+          "scale": 2
+        },
+        "stock": {
+          "@title": "{i18n>Stock}",
+          "type": "cds.Integer",
+          "default": {
+            "val": 0
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "erp4sme.salesorder.AdminService.Products.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.AdminService.Products.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "actions": {
+        "increaseStock": {
+          "kind": "action",
+          "@cds.odata.bindingparameter.name": "_it",
+          "@Core.OperationAvailable": {
+            "=": "_it.IsActiveEntity"
+          },
+          "@Common.SideEffects.TargetProperties": [
+            "_it/stock"
+          ],
+          "params": {
+            "quantity": {
+              "@title": "{i18n>Quantity}",
+              "@Validation.Maximum": 1,
+              "type": "cds.Integer"
+            }
+          }
+        }
+      }
+    },
+    "erp4sme.salesorder.AdminService.Categories": {
+      "kind": "entity",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@UI.LineItem": [
+        {
+          "Value": {
+            "=": "identifier"
+          }
+        },
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "description"
+          }
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "erp4sme.salesorder.Categories"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "@Common.Text": {
+            "=": "name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String"
+        },
+        "identifier": {
+          "@title": "{i18n>Identifier}",
+          "type": "cds.String"
+        },
+        "parent": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.AdminService.Categories",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "description": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String"
+        },
+        "image": {
+          "type": "cds.String"
+        },
+        "thumbnailImage": {
+          "type": "cds.String"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "erp4sme.salesorder.AdminService.Categories.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.AdminService.Categories.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderService": {
+      "@source": "srv/salesorder-service.cds",
+      "kind": "service"
+    },
+    "erp4sme.salesorder.SalesOrderService.SalesOrderType": {
+      "kind": "entity",
+      "@readonly": true,
+      "@title": "Sales Order Types",
+      "projection": {
+        "from": {
+          "ref": [
+            "erp4sme.salesorder.SalesOrderType"
+          ]
+        }
+      },
+      "elements": {
+        "salesOrderType": {
+          "@title": "{i18n>Order Type}",
+          "@Common.Text": {
+            "=": "salesOrderTypeText"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 4
+        },
+        "salesOrderTypeText": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "salesOrderProcessingType": {
+          "type": "cds.String",
+          "length": 1
+        },
+        "orderTypeForBillingRequest": {
+          "type": "cds.String",
+          "length": 4
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderService.LifeCycleStatus": {
+      "kind": "entity",
+      "@readonly": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "erp4sme.salesorder.LifeCycleStatus"
+          ]
+        }
+      },
+      "elements": {
+        "code": {
+          "@Common.Text": {
+            "=": "text"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "key": true,
+          "type": "erp4sme.salesorder.StatusCode"
+        },
+        "text": {
+          "@title": "{i18n>Status}",
+          "localized": true,
+          "type": "cds.String"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "erp4sme.salesorder.SalesOrderService.LifeCycleStatus.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.SalesOrderService.LifeCycleStatus.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderService.Products": {
+      "kind": "entity",
+      "@readonly": true,
+      "@UI.FieldGroup#Admin.Label": "{i18n>Products.Admin}",
+      "@UI.FieldGroup#Admin.Data": [
+        {
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedAt"
+          }
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "erp4sme.salesorder.Products"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "@Common.Text": {
+            "=": "identifier"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String"
+        },
+        "identifier": {
+          "@title": "{i18n>Identifier}",
+          "type": "cds.String"
+        },
+        "category": {
+          "@title": "{i18n>Category}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.Categories",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "description": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String"
+        },
+        "currency": {
+          "@title": "{i18n>Currency}",
+          "@Common.Text": {
+            "=": "currency.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@Common.ValueListWithFixedValues": true,
+          "@description": "{i18n>CurrencyCode.Description}",
+          "type": "Currency",
+          "target": "erp4sme.salesorder.SalesOrderService.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "image": {
+          "@title": "{i18n>Image}",
+          "type": "cds.String"
+        },
+        "thumbnailImage": {
+          "@title": "{i18n>ThumbnailImage}",
+          "@UI.IsImageURL": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "isPreferred": {
+          "type": "cds.Boolean"
+        },
+        "rating": {
+          "@title": "{i18n>Rating}",
+          "type": "cds.Decimal",
+          "precision": 2,
+          "scale": 1
+        },
+        "relatedProduct": {
+          "@title": "{i18n>RelatedProduct}",
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.SalesOrderService.Products",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "price": {
+          "@title": "{i18n>Price}",
+          "@Measures.ISOCurrency": {
+            "=": "currency_code"
+          },
+          "type": "cds.Decimal",
+          "precision": 9,
+          "scale": 2
+        },
+        "stock": {
+          "@title": "{i18n>Stock}",
+          "type": "cds.Integer",
+          "default": {
+            "val": 0
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "erp4sme.salesorder.SalesOrderService.Products.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.SalesOrderService.Products.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderService.BusinessPartners": {
+      "kind": "entity",
+      "@readonly": true,
+      "@UI.FieldGroup#Admin.Label": "{i18n>Products.Admin}",
+      "@UI.FieldGroup#Admin.Data": [
+        {
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedAt"
+          }
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "erp4sme.salesorder.BusinessPartners"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "@Common.Text": {
+            "=": "identifier"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "identifier": {
+          "@title": "{i18n>Company Code}",
+          "@Common.Text": {
+            "=": "companyName"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "type": "cds.String",
+          "length": 10
+        },
+        "companyName": {
+          "@title": "{i18n>Company Name}",
+          "type": "cds.String",
+          "length": 80
+        },
+        "emailAddress": {
+          "type": "cds.String",
+          "length": 255
+        },
+        "phoneNumber": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "mobilePhoneNumber": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "faxNumber": {
+          "type": "cds.String",
+          "length": 30
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderService.SalesOrders": {
+      "kind": "entity",
+      "@odata.draft.enabled": true,
+      "@UI.SelectionFields": [
+        {
+          "=": "orderType_salesOrderType"
+        },
+        {
+          "=": "soldToParty_ID"
+        },
+        {
+          "=": "lifecycleStatus_code"
+        }
+      ],
+      "@UI.HeaderInfo.TypeName": "Sales Order",
+      "@UI.HeaderInfo.TypeNamePlural": "Sales Order List",
+      "@UI.HeaderInfo.Title.Label": "Order number",
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "identifier"
+      },
+      "@UI.LineItem": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "identifier"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "soldToParty.identifier"
+          },
+          "Label": "{i18n>Sold-To Party}",
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "orderType.salesOrderType"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "netAmount"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "lifecycleStatus_code"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        }
+      ],
+      "@UI.Identification": [
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Label": "Release",
+          "Action": "erp4sme.salesorder.SalesOrderService.release"
+        },
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Label": "Cancel",
+          "Action": "erp4sme.salesorder.SalesOrderService.cancel"
+        }
+      ],
+      "@UI.HeaderFacets": [
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Target": "@UI.FieldGroup#HeaderGeneralInformation",
+          "@UI.Importance": {
+            "#": "High"
+          }
+        }
+      ],
+      "@UI.Facets": [
+        {
+          "$Type": "UI.CollectionFacet",
+          "Label": "Header",
+          "ID": "HeaderInfo",
+          "Facets": [
+            {
+              "$Type": "UI.CollectionFacet",
+              "ID": "GeneralInfo",
+              "Label": "General Information",
+              "Facets": [
+                {
+                  "$Type": "UI.ReferenceFacet",
+                  "Label": "Order Data",
+                  "ID": "OrderData",
+                  "Target": "@UI.FieldGroup#OrderData",
+                  "@UI.Importance": {
+                    "#": "High"
+                  },
+                  "@UI.Hidden": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Label": "Items",
+          "ID": "SalesOrderItems",
+          "Target": "salesOrderItems/@UI.LineItem"
+        }
+      ],
+      "@UI.FieldGroup#HeaderGeneralInformation.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "identifier"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "orderType_salesOrderType"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "lifecycleStatus_code"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        }
+      ],
+      "@UI.FieldGroup#OrderData.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "soldToParty_ID"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "netAmount"
+          },
+          "Label": "Net Amount",
+          "@UI.Importance": {
+            "#": "High"
+          }
+        }
+      ],
+      "@UI.FieldGroup#Admin.Label": "{i18n>Products.Admin}",
+      "@UI.FieldGroup#Admin.Data": [
+        {
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedAt"
+          }
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "erp4sme.salesorder.SalesOrders"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "currency": {
+          "@Common.Text": {
+            "=": "currency.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@Common.ValueListWithFixedValues": true,
+          "@title": "{i18n>Currency}",
+          "@description": "{i18n>CurrencyCode.Description}",
+          "type": "Currency",
+          "target": "erp4sme.salesorder.SalesOrderService.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "identifier": {
+          "@title": "{i18n>Sales Order}",
+          "@Core.Immutable": true,
+          "type": "erp4sme.salesorder.SalesOrderId",
+          "length": 10
+        },
+        "orderType": {
+          "@title": "Order Type",
+          "@Common.Text": {
+            "=": "orderType.salesOrderTypeText"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          },
+          "@Common.ValueList.Label": "Sales Order Type Value Help",
+          "@Common.ValueList.CollectionPath": "SalesOrderType",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "orderType_salesOrderType"
+              },
+              "ValueListProperty": "salesOrderType"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "salesOrderTypeText"
+            }
+          ],
+          "@Common.ValueListWithFixedValues": true,
+          "@Core.Immutable": true,
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.SalesOrderService.SalesOrderType",
+          "keys": [
+            {
+              "ref": [
+                "salesOrderType"
+              ]
+            }
+          ]
+        },
+        "buyerId": {
+          "type": "cds.String"
+        },
+        "buyerName": {
+          "type": "cds.String",
+          "length": 80
+        },
+        "grossAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "netAmount": {
+          "@title": "{i18n>Net Amount}",
+          "@Measures.ISOCurrency": {
+            "=": "currency_code"
+          },
+          "@readonly": true,
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "taxAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "lifecycleStatus": {
+          "@title": "{i18n>Status}",
+          "@Common.Text": {
+            "=": "lifecycleStatus.text"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@Common.FieldControl": {
+            "#": "ReadOnly"
+          },
+          "@Common.ValueList.Label": "Status Value Help",
+          "@Common.ValueList.CollectionPath": "LifeCycleStatus",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "lifecycleStatus_code"
+              },
+              "ValueListProperty": "code"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "text"
+            }
+          ],
+          "@Common.ValueListWithFixedValues": true,
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.SalesOrderService.LifeCycleStatus",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "soldToParty": {
+          "@title": "{i18n>Sold-To Party}",
+          "@Common.Text": {
+            "=": "soldToParty.identifier"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          },
+          "@Common.ValueList.Label": "Sold-To Party Value Help",
+          "@Common.ValueList.CollectionPath": "BusinessPartners",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "soldToParty_ID"
+              },
+              "ValueListProperty": "ID"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "companyName"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "identifier"
+            }
+          ],
+          "@Common.ValueListWithFixedValues": false,
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.SalesOrderService.BusinessPartners",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "businessPartners": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.SalesOrderService.BusinessPartners",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "salesOrderItems": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "erp4sme.salesorder.SalesOrderService.SalesOrderItems",
+          "on": [
+            {
+              "ref": [
+                "salesOrderItems",
+                "salesOrder"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      },
+      "actions": {
+        "release": {
+          "kind": "action",
+          "@Common.SideEffects.TargetEntities": [
+            {
+              "=": "_it.lifecycleStatus"
+            }
+          ],
+          "@cds.odata.bindingparameter.name": "_it"
+        },
+        "cancel": {
+          "kind": "action",
+          "@Common.SideEffects.TargetEntities": [
+            {
+              "=": "_it.lifecycleStatus"
+            }
+          ],
+          "@cds.odata.bindingparameter.name": "_it"
+        },
+        "test": {
+          "kind": "action"
+        }
+      }
+    },
+    "erp4sme.salesorder.Products": {
+      "kind": "entity",
+      "@UI.FieldGroup#Admin.Label": "{i18n>Products.Admin}",
+      "@UI.FieldGroup#Admin.Data": [
+        {
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedAt"
+          }
+        }
+      ],
+      "includes": [
+        "cuid",
+        "managed"
+      ],
+      "elements": {
+        "ID": {
+          "@Common.Text": {
+            "=": "identifier"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String"
+        },
+        "identifier": {
+          "@title": "{i18n>Identifier}",
+          "type": "cds.String"
+        },
+        "category": {
+          "@title": "{i18n>Category}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.Categories",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "description": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String"
+        },
+        "currency": {
+          "@title": "{i18n>Currency}",
+          "@Common.Text": {
+            "=": "currency.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@Common.ValueListWithFixedValues": true,
+          "@description": "{i18n>CurrencyCode.Description}",
+          "type": "Currency",
+          "target": "sap.common.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "image": {
+          "@title": "{i18n>Image}",
+          "type": "cds.String"
+        },
+        "thumbnailImage": {
+          "@title": "{i18n>ThumbnailImage}",
+          "@UI.IsImageURL": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "isPreferred": {
+          "type": "cds.Boolean"
+        },
+        "rating": {
+          "@title": "{i18n>Rating}",
+          "type": "cds.Decimal",
+          "precision": 2,
+          "scale": 1
+        },
+        "relatedProduct": {
+          "@title": "{i18n>RelatedProduct}",
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.Products",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "price": {
+          "@title": "{i18n>Price}",
+          "@Measures.ISOCurrency": {
+            "=": "currency_code"
+          },
+          "type": "cds.Decimal",
+          "precision": 9,
+          "scale": 2
+        },
+        "stock": {
+          "@title": "{i18n>Stock}",
+          "type": "cds.Integer",
+          "default": {
+            "val": 0
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "erp4sme.salesorder.Products.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.Products.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "erp4sme.salesorder.Categories": {
+      "kind": "entity",
+      "includes": [
+        "cuid"
+      ],
+      "elements": {
+        "ID": {
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String"
+        },
+        "identifier": {
+          "@title": "{i18n>Identifier}",
+          "type": "cds.String"
+        },
+        "parent": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.Categories",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "description": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String"
+        },
+        "image": {
+          "type": "cds.String"
+        },
+        "thumbnailImage": {
+          "type": "cds.String"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "erp4sme.salesorder.Categories.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.Categories.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderId": {
+      "kind": "type",
+      "@title": "Sales Order No.",
+      "@Core.Immutable": true,
+      "type": "cds.String",
+      "length": 10
+    },
+    "erp4sme.salesorder.StatusCode": {
+      "kind": "type",
+      "type": "cds.Integer",
+      "enum": {
+        "Open": {
+          "val": 0
+        },
+        "Released": {
+          "val": 1
+        },
+        "Canceled": {
+          "val": -1
+        }
+      }
+    },
+    "erp4sme.salesorder.LifeCycleStatus": {
+      "kind": "entity",
+      "elements": {
+        "code": {
+          "@Common.Text": {
+            "=": "text"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "key": true,
+          "type": "erp4sme.salesorder.StatusCode"
+        },
+        "text": {
+          "@title": "{i18n>Status}",
+          "localized": true,
+          "type": "cds.String"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "erp4sme.salesorder.LifeCycleStatus.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.LifeCycleStatus.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderType": {
+      "kind": "entity",
+      "@title": "Sales Order Types",
+      "elements": {
+        "salesOrderType": {
+          "@title": "{i18n>Order Type}",
+          "@Common.Text": {
+            "=": "salesOrderTypeText"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 4
+        },
+        "salesOrderTypeText": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "salesOrderProcessingType": {
+          "type": "cds.String",
+          "length": 1
+        },
+        "orderTypeForBillingRequest": {
+          "type": "cds.String",
+          "length": 4
+        }
+      }
+    },
+    "erp4sme.salesorder.BusinessPartners": {
+      "kind": "entity",
+      "@UI.FieldGroup#Admin.Label": "{i18n>Products.Admin}",
+      "@UI.FieldGroup#Admin.Data": [
+        {
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedAt"
+          }
+        }
+      ],
+      "includes": [
+        "cuid",
+        "managed"
+      ],
+      "elements": {
+        "ID": {
+          "@Common.Text": {
+            "=": "identifier"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "identifier": {
+          "@title": "{i18n>Company Code}",
+          "@Common.Text": {
+            "=": "companyName"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "type": "cds.String",
+          "length": 10
+        },
+        "companyName": {
+          "@title": "{i18n>Company Name}",
+          "type": "cds.String",
+          "length": 80
+        },
+        "emailAddress": {
+          "type": "cds.String",
+          "length": 255
+        },
+        "phoneNumber": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "mobilePhoneNumber": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "faxNumber": {
+          "type": "cds.String",
+          "length": 30
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderItems": {
+      "kind": "entity",
+      "@UI.FieldGroup#Admin.Label": "{i18n>Products.Admin}",
+      "@UI.FieldGroup#Admin.Data": [
+        {
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedAt"
+          }
+        }
+      ],
+      "includes": [
+        "cuid",
+        "managed",
+        "hasCurrency"
+      ],
+      "elements": {
+        "ID": {
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "currency": {
+          "@Common.Text": {
+            "=": "currency.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@Common.ValueListWithFixedValues": true,
+          "@title": "{i18n>Currency}",
+          "@description": "{i18n>CurrencyCode.Description}",
+          "type": "Currency",
+          "target": "sap.common.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "identifier": {
+          "@title": "{i18n>Item ID}",
+          "type": "cds.String",
+          "length": 10
+        },
+        "grossAmount": {
+          "@title": "{i18n>Gross Amount}",
+          "type": "cds.Decimal",
+          "precision": 16,
+          "scale": 2
+        },
+        "netAmount": {
+          "@title": "{i18n>Net Amount}",
+          "@Measures.ISOCurrency": {
+            "=": "currency_code"
+          },
+          "type": "cds.Decimal",
+          "precision": 16,
+          "scale": 2
+        },
+        "taxAmount": {
+          "@title": "{i18n>Tax Amount}",
+          "type": "cds.Decimal",
+          "precision": 16,
+          "scale": 2
+        },
+        "deliveryDate": {
+          "type": "cds.Date"
+        },
+        "price": {
+          "@title": "{i18n>Price}",
+          "@Measures.ISOCurrency": {
+            "=": "currency_code"
+          },
+          "type": "cds.Decimal",
+          "precision": 16,
+          "scale": 2,
+          "default": {
+            "val": 0
+          }
+        },
+        "quantity": {
+          "@title": "{i18n>Quantity}",
+          "type": "cds.Integer",
+          "default": {
+            "val": 0
+          }
+        },
+        "quantityUnit": {
+          "@title": "{i18n>Quantity Unit}",
+          "type": "cds.String",
+          "length": 3,
+          "default": {
+            "val": "PC"
+          }
+        },
+        "product": {
+          "@title": "{i18n>Product}",
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.Products",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "salesOrder": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "erp4sme.salesorder.SalesOrders",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrders": {
+      "kind": "entity",
+      "@UI.FieldGroup#Admin.Label": "{i18n>Products.Admin}",
+      "@UI.FieldGroup#Admin.Data": [
+        {
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedAt"
+          }
+        }
+      ],
+      "includes": [
+        "cuid",
+        "managed",
+        "hasCurrency"
+      ],
+      "elements": {
+        "ID": {
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "currency": {
+          "@Common.Text": {
+            "=": "currency.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@Common.ValueListWithFixedValues": true,
+          "@title": "{i18n>Currency}",
+          "@description": "{i18n>CurrencyCode.Description}",
+          "type": "Currency",
+          "target": "sap.common.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "identifier": {
+          "@title": "{i18n>Sales Order}",
+          "@Core.Immutable": true,
+          "type": "erp4sme.salesorder.SalesOrderId",
+          "length": 10
+        },
+        "orderType": {
+          "@Core.Immutable": true,
+          "@title": "{i18n>Order Type}",
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.SalesOrderType",
+          "keys": [
+            {
+              "ref": [
+                "salesOrderType"
+              ]
+            }
+          ]
+        },
+        "buyerId": {
+          "type": "cds.String"
+        },
+        "buyerName": {
+          "type": "cds.String",
+          "length": 80
+        },
+        "grossAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "netAmount": {
+          "@title": "{i18n>Net Amount}",
+          "@Measures.ISOCurrency": {
+            "=": "currency_code"
+          },
+          "@readonly": true,
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "taxAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "lifecycleStatus": {
+          "@title": "{i18n>Status}",
+          "@Common.Text": {
+            "=": "lifecycleStatus.text"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.LifeCycleStatus",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "soldToParty": {
+          "@title": "{i18n>Sold-To Party}",
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.BusinessPartners",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "businessPartners": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.BusinessPartners",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "salesOrderItems": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "erp4sme.salesorder.SalesOrderItems",
+          "on": [
+            {
+              "ref": [
+                "salesOrderItems",
+                "salesOrder"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "Language": {
+      "kind": "type",
+      "@title": "{i18n>Language}",
+      "@description": "{i18n>LanguageCode.Description}",
+      "type": "cds.Association",
+      "target": "sap.common.Languages",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "Currency": {
+      "kind": "type",
+      "@title": "{i18n>Currency}",
+      "@description": "{i18n>CurrencyCode.Description}",
+      "type": "cds.Association",
+      "target": "sap.common.Currencies",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "Country": {
+      "kind": "type",
+      "@title": "{i18n>Country}",
+      "@description": "{i18n>CountryCode.Description}",
+      "type": "cds.Association",
+      "target": "sap.common.Countries",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "sap.common": {
+      "kind": "context"
+    },
+    "sap.common.Languages": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>LanguageCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Languages.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Languages.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.Countries": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>CountryCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Countries.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Countries.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.Currencies": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>CurrencyCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "symbol": {
+          "@title": "{i18n>CurrencySymbol}",
+          "type": "cds.String",
+          "length": 5
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.CodeList": {
+      "kind": "aspect",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        }
+      }
+    },
+    "cuid": {
+      "kind": "aspect",
+      "elements": {
+        "ID": {
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        }
+      }
+    },
+    "managed": {
+      "kind": "aspect",
+      "@UI.FieldGroup#Admin.Label": "{i18n>Products.Admin}",
+      "@UI.FieldGroup#Admin.Data": [
+        {
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedAt"
+          }
+        }
+      ],
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        }
+      }
+    },
+    "temporal": {
+      "kind": "aspect",
+      "elements": {
+        "validFrom": {
+          "@cds.valid.from": true,
+          "type": "cds.Timestamp"
+        },
+        "validTo": {
+          "@cds.valid.to": true,
+          "type": "cds.Timestamp"
+        }
+      }
+    },
+    "User": {
+      "kind": "type",
+      "@title": "{i18n>UserID}",
+      "@description": "{i18n>UserID.Description}",
+      "type": "cds.String",
+      "length": 255
+    },
+    "hasCurrency": {
+      "kind": "aspect",
+      "elements": {
+        "currency": {
+          "@Common.Text": {
+            "=": "currency.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@Common.ValueListWithFixedValues": true,
+          "@title": "{i18n>Currency}",
+          "@description": "{i18n>CurrencyCode.Description}",
+          "type": "Currency",
+          "target": "sap.common.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "erp4sme.salesorder.Products.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "ID": {
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "identifier"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String"
+        },
+        "description": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String"
+        }
+      }
+    },
+    "erp4sme.salesorder.Categories.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "ID": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String"
+        },
+        "description": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String"
+        }
+      }
+    },
+    "erp4sme.salesorder.LifeCycleStatus.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "text"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "key": true,
+          "type": "erp4sme.salesorder.StatusCode"
+        },
+        "text": {
+          "@title": "{i18n>Status}",
+          "localized": false,
+          "type": "cds.String"
+        }
+      }
+    },
+    "sap.common.Languages.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>LanguageCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        }
+      }
+    },
+    "sap.common.Countries.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>CountryCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    },
+    "sap.common.Currencies.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>CurrencyCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    },
+    "erp4sme.salesorder.AdminService.Currencies": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.common.Currencies"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>CurrencyCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "symbol": {
+          "@title": "{i18n>CurrencySymbol}",
+          "type": "cds.String",
+          "length": 5
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "erp4sme.salesorder.AdminService.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.AdminService.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "erp4sme.salesorder.AdminService.Products.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "erp4sme.salesorder.Products.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "ID": {
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "identifier"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String"
+        },
+        "description": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String"
+        }
+      }
+    },
+    "erp4sme.salesorder.AdminService.Categories.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "erp4sme.salesorder.Categories.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "ID": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String"
+        },
+        "description": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String"
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderService.LifeCycleStatus.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "erp4sme.salesorder.LifeCycleStatus.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "text"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "key": true,
+          "type": "erp4sme.salesorder.StatusCode"
+        },
+        "text": {
+          "@title": "{i18n>Status}",
+          "localized": false,
+          "type": "cds.String"
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderService.Currencies": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.common.Currencies"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>CurrencyCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "symbol": {
+          "@title": "{i18n>CurrencySymbol}",
+          "type": "cds.String",
+          "length": 5
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "erp4sme.salesorder.SalesOrderService.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.SalesOrderService.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderService.Products.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "erp4sme.salesorder.Products.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "ID": {
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "identifier"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String"
+        },
+        "description": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String"
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderService.SalesOrderItems": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@Common.SideEffects#productUpdate.SourceProperties": [
+        {
+          "=": "product_ID"
+        }
+      ],
+      "@Common.SideEffects#productUpdate.TargetEntities": [
+        {
+          "=": "product"
+        },
+        {
+          "=": "salesOrder"
+        }
+      ],
+      "@Common.SideEffects#productUpdate.TargetProperties": [
+        "price",
+        "currency_code",
+        "netAmount"
+      ],
+      "@Common.SideEffects#netAmountUpdate.SourceProperties": [
+        {
+          "=": "price"
+        },
+        {
+          "=": "quantity"
+        }
+      ],
+      "@Common.SideEffects#netAmountUpdate.TargetProperties": [
+        "netAmount"
+      ],
+      "@Common.SideEffects#netAmountUpdate.TargetEntities": [
+        {
+          "=": "salesOrder"
+        }
+      ],
+      "@UI.HeaderInfo.TypeName": "Sales Order Item",
+      "@UI.HeaderInfo.TypeNamePlural": "Sales Order Item List",
+      "@UI.LineItem": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "product.thumbnailImage"
+          },
+          "IconUrl": {
+            "=": "product.thumbnailImage"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "product_ID"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "price"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "quantity"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "quantityUnit"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "netAmount"
+          },
+          "@UI.Importance": {
+            "#": "High"
+          }
+        }
+      ],
+      "@UI.FieldGroup#Admin.Label": "{i18n>Products.Admin}",
+      "@UI.FieldGroup#Admin.Data": [
+        {
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedBy"
+          }
+        },
+        {
+          "Value": {
+            "=": "modifiedAt"
+          }
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "erp4sme.salesorder.SalesOrderItems"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "@title": "{i18n>ID}",
+          "@UI.HiddenFilter": true,
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "currency": {
+          "@Common.Text": {
+            "=": "currency.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextFirst"
+          },
+          "@Common.ValueListWithFixedValues": true,
+          "@title": "{i18n>Currency}",
+          "@description": "{i18n>CurrencyCode.Description}",
+          "type": "Currency",
+          "target": "erp4sme.salesorder.SalesOrderService.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "identifier": {
+          "@title": "{i18n>Item ID}",
+          "type": "cds.String",
+          "length": 10
+        },
+        "grossAmount": {
+          "@title": "{i18n>Gross Amount}",
+          "type": "cds.Decimal",
+          "precision": 16,
+          "scale": 2
+        },
+        "netAmount": {
+          "@title": "{i18n>Net Amount}",
+          "@Measures.ISOCurrency": {
+            "=": "currency_code"
+          },
+          "type": "cds.Decimal",
+          "precision": 16,
+          "scale": 2
+        },
+        "taxAmount": {
+          "@title": "{i18n>Tax Amount}",
+          "type": "cds.Decimal",
+          "precision": 16,
+          "scale": 2
+        },
+        "deliveryDate": {
+          "type": "cds.Date"
+        },
+        "price": {
+          "@title": "{i18n>Price}",
+          "@Measures.ISOCurrency": {
+            "=": "currency_code"
+          },
+          "type": "cds.Decimal",
+          "precision": 16,
+          "scale": 2,
+          "default": {
+            "val": 0
+          }
+        },
+        "quantity": {
+          "@title": "{i18n>Quantity}",
+          "type": "cds.Integer",
+          "default": {
+            "val": 0
+          }
+        },
+        "quantityUnit": {
+          "@title": "{i18n>Quantity Unit}",
+          "type": "cds.String",
+          "length": 3,
+          "default": {
+            "val": "PC"
+          }
+        },
+        "product": {
+          "@title": "Product",
+          "@Common.Text": {
+            "=": "product.identifier"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          },
+          "@Common.ValueList.Label": "Product Value Help",
+          "@Common.ValueList.CollectionPath": "Products",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "product_ID"
+              },
+              "ValueListProperty": "ID"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "thumbnailImage"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "identifier"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "name"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "price"
+            }
+          ],
+          "@Common.ValueListWithFixedValues": false,
+          "@Common.SemanticObjectMapping": [
+            {
+              "$Type": "Common.SemanticObjectMappingType",
+              "LocalProperty": "product_ID",
+              "SemanticObjectProperty": "ID"
+            }
+          ],
+          "@Common.SemanticObject": "product",
+          "type": "cds.Association",
+          "target": "erp4sme.salesorder.SalesOrderService.Products",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "salesOrder": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "erp4sme.salesorder.SalesOrderService.SalesOrders",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "erp4sme.salesorder.AdminService.Currencies.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.common.Currencies.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>CurrencyCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    },
+    "erp4sme.salesorder.SalesOrderService.Currencies.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.common.Currencies.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>CurrencyCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    }
+  },
+  "extensions": [
+    {
+      "annotate": "erp4sme.salesorder.AdminService.Products",
+      "elements": {
+        "currency_code": {
+          "@UI.Hidden": true,
+          "@UI.HiddenFilter": true
+        }
+      }
+    }
+  ],
+  "meta": {
+    "creator": "CDS Compiler v2.5.2",
+    "flavor": "inferred"
+  },
+  "$version": "2.0"
+}

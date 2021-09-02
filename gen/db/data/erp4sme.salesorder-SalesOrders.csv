@@ -1,0 +1,2 @@
+ID;identifier;orderType_SalesOrderType;buyerId;buyerName;currency_code;grossAmount;netAmount;taxAmount;lifecycleStatus_code;soldToParty_id;businessPartners_id;
+5d47f9c4-e725-4f24-a5f1-e053f0f7afcd;2917844;OR;66b2a8e0-d6fc-4e93-8eb2-fccc73bddc80;buyer 01;EUR;15117.76;12704;2413.76;0;32b9f866-15ee-4b58-91ba-09a4df35eb7d;32b9f866-15ee-4b58-91ba-09a4df35eb7d;

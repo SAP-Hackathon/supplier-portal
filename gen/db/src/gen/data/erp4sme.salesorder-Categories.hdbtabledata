@@ -1,0 +1,37 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "ERP4SME_SALESORDER_CATEGORIES",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "erp4sme.salesorder-Categories.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ","
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "DESCRIPTION",
+          "IDENTIFIER",
+          "IMAGE",
+          "NAME",
+          "PARENT_ID",
+          "THUMBNAILIMAGE",
+          "ID"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "DESCRIPTION": "DESCRIPTION",
+        "IDENTIFIER": "IDENTIFIER",
+        "IMAGE": "IMAGE",
+        "NAME": "NAME",
+        "PARENT_ID": "PARENT_ID",
+        "THUMBNAILIMAGE": "THUMBNAILIMAGE",
+        "ID": "ID"
+      }
+    }
+  ]
+}

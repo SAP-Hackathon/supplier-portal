@@ -1,0 +1,43 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "ERP4SME_SALESORDER_SALESORDERITEMS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "erp4sme.salesorder-SalesOrderItems.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "ID",
+          "CURRENCY_CODE",
+          "GROSSAMOUNT",
+          "NETAMOUNT",
+          "TAXAMOUNT",
+          "DELIVERYDATE",
+          "QUANTITY",
+          "QUANTITYUNIT",
+          "PRODUCT_ID",
+          "SALESORDER_ID"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "ID": "ID",
+        "CURRENCY_CODE": "currency_code",
+        "GROSSAMOUNT": "grossAmount",
+        "NETAMOUNT": "netAmount",
+        "TAXAMOUNT": "taxAmount",
+        "DELIVERYDATE": "deliveryDate",
+        "QUANTITY": "quantity",
+        "QUANTITYUNIT": "quantityUnit",
+        "PRODUCT_ID": "product_id",
+        "SALESORDER_ID": "salesOrder_id"
+      }
+    }
+  ]
+}

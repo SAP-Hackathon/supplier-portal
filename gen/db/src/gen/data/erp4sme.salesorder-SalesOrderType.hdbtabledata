@@ -1,0 +1,31 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "ERP4SME_SALESORDER_SALESORDERTYPE",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "erp4sme.salesorder-SalesOrderType.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "SALESORDERTYPE",
+          "SALESORDERTYPETEXT",
+          "SALESORDERPROCESSINGTYPE",
+          "ORDERTYPEFORBILLINGREQUEST"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "SALESORDERTYPE": "SalesOrderType",
+        "SALESORDERTYPETEXT": "SalesOrderTypeText",
+        "SALESORDERPROCESSINGTYPE": "SalesOrderProcessingType",
+        "ORDERTYPEFORBILLINGREQUEST": "OrderTypeForBillingRequest"
+      }
+    }
+  ]
+}

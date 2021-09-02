@@ -1,0 +1,47 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "ERP4SME_SALESORDER_SALESORDERS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "erp4sme.salesorder-SalesOrders.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "ID",
+          "IDENTIFIER",
+          "ORDERTYPE_SALESORDERTYPE",
+          "BUYERID",
+          "BUYERNAME",
+          "CURRENCY_CODE",
+          "GROSSAMOUNT",
+          "NETAMOUNT",
+          "TAXAMOUNT",
+          "LIFECYCLESTATUS_CODE",
+          "SOLDTOPARTY_ID",
+          "BUSINESSPARTNERS_ID"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "ID": "ID",
+        "IDENTIFIER": "identifier",
+        "ORDERTYPE_SALESORDERTYPE": "orderType_SalesOrderType",
+        "BUYERID": "buyerId",
+        "BUYERNAME": "buyerName",
+        "CURRENCY_CODE": "currency_code",
+        "GROSSAMOUNT": "grossAmount",
+        "NETAMOUNT": "netAmount",
+        "TAXAMOUNT": "taxAmount",
+        "LIFECYCLESTATUS_CODE": "lifecycleStatus_code",
+        "SOLDTOPARTY_ID": "soldToParty_id",
+        "BUSINESSPARTNERS_ID": "businessPartners_id"
+      }
+    }
+  ]
+}

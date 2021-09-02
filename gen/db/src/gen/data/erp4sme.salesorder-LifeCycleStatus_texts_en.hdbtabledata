@@ -1,0 +1,33 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "ERP4SME_SALESORDER_LIFECYCLESTATUS_TEXTS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "erp4sme.salesorder-LifeCycleStatus_texts_en.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "CODE",
+          "LOCALE",
+          "TEXT"
+        ],
+        "include_filter": [
+          {
+            "LOCALE": "en"
+          }
+        ]
+      },
+      "column_mappings": {
+        "CODE": "code",
+        "LOCALE": "locale",
+        "TEXT": "text"
+      }
+    }
+  ]
+}

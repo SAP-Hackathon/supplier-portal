@@ -1,0 +1,3 @@
+SalesOrderType;SalesOrderTypeText;SalesOrderProcessingType;OrderTypeForBillingRequest
+OR;Standard Order;;
+VDOR;Third Party Order BR;;
